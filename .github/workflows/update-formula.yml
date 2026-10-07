@@ -1,0 +1,47 @@
+name: update-formula
+
+# Keeps Formula/blinkenkeys.rb on the latest non-prerelease release of
+# seefood/blinkenkeys. Pulls (no cross-repo secret): daily, or run by hand.
+on:
+  schedule:
+    - cron: "17 5 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: update-formula
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
+      SRC: seefood/blinkenkeys
+    steps:
+      - uses: actions/checkout@v7
+      - name: Render formula from the latest release
+        run: |
+          set -euo pipefail
+          tag="$(gh release view --repo "$SRC" --json tagName --jq .tagName)"
+          if [[ ! "$tag" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "::error::latest release tag '$tag' is not vX.Y.Z"
+            exit 1
+          fi
+          version="${tag#v}"
+          current="$(sed -n 's/^ *ver = "\(.*\)"$/\1/p' Formula/blinkenkeys.rb)"
+          if [[ "$current" == "$version" ]]; then
+            echo "formula already at $version"
+            exit 0
+          fi
+          gh release download "$tag" --repo "$SRC" --pattern SHA256SUMS --output "$RUNNER_TEMP/SHA256SUMS"
+          gh api "repos/$SRC/contents/packaging/homebrew/blinkenkeys.rb" \
+            -H "Accept: application/vnd.github.raw" > "$RUNNER_TEMP/template.rb"
+          python3 .github/render-formula.py "$RUNNER_TEMP/template.rb" "$RUNNER_TEMP/SHA256SUMS" "$version" Formula/blinkenkeys.rb
+          ruby -c Formula/blinkenkeys.rb
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -am "blinkenkeys $version"
+          git push
