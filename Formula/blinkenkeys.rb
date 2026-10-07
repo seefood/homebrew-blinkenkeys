@@ -1,25 +1,25 @@
 class Blinkenkeys < Formula
   desc "Daemon and CLI that drive per-key RGB on VialRGB keyboards"
   homepage "https://github.com/seefood/blinkenkeys"
-  version "0.2.0"
   license "GPL-3.0-only" # README says "GPL-3.0"; confirm -only vs -or-later
 
-  base = "https://github.com/seefood/blinkenkeys/releases/download/v#{version}"
+  ver = "0.2.0"
+  base = "https://github.com/seefood/blinkenkeys/releases/download/v#{ver}"
 
   on_macos do
     on_arm do
-      url "#{base}/blinkenkeys-v#{version}-darwin-arm64.tar.gz"
+      url "#{base}/blinkenkeys-v#{ver}-darwin-arm64.tar.gz"
       sha256 "4584b050aa5b5494c96794d517ff91fdaace28c507226aa7298cb9e14e8fd2b3"
     end
     on_intel do
-      url "#{base}/blinkenkeys-v#{version}-darwin-amd64.tar.gz"
+      url "#{base}/blinkenkeys-v#{ver}-darwin-amd64.tar.gz"
       sha256 "5fda3ef922932cee0360f3fb84ef176cd19255aa0319799d3ce468a2c5bf695e"
     end
   end
 
   on_linux do
     on_intel do
-      url "#{base}/blinkenkeys-v#{version}-linux-amd64.tar.gz"
+      url "#{base}/blinkenkeys-v#{ver}-linux-amd64.tar.gz"
       sha256 "bda2f833cfa25880070a3038c9ee69e37cf3dade581e91aa2c69d9dad9b8a137"
     end
   end
