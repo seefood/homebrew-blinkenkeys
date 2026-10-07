@@ -3,24 +3,24 @@ class Blinkenkeys < Formula
   homepage "https://github.com/seefood/blinkenkeys"
   license "GPL-3.0-only" # README says "GPL-3.0"; confirm -only vs -or-later
 
-  ver = "0.2.1"
+  ver = "0.2.2"
   base = "https://github.com/seefood/blinkenkeys/releases/download/v#{ver}"
 
   on_macos do
     on_arm do
       url "#{base}/blinkenkeys-v#{ver}-darwin-arm64.tar.gz"
-      sha256 "e261df710c3b0b97c479f0e52d2780a95cbba50076ac2c3b0e3b8e2cbd45aa8d"
+      sha256 "8973bd58da9210127683ef47fd878e7219e56fcb335ba4c06735eeb6fa5ac485"
     end
     on_intel do
       url "#{base}/blinkenkeys-v#{ver}-darwin-amd64.tar.gz"
-      sha256 "ecf20111dd042e8092358ff69797cdef0180d95e2c4c5f243accfcada9a7825c"
+      sha256 "0d237872c57f8721eed665e03018c04012793032459e31f8b6e047266832e3f8"
     end
   end
 
   on_linux do
     on_intel do
       url "#{base}/blinkenkeys-v#{ver}-linux-amd64.tar.gz"
-      sha256 "46de151e8d9a202863dd3fefad174e0b3e7de5efa43a2b8bdfa3743af6681880"
+      sha256 "4e722270a7173139d40e262c1e89f954f1af307ecd3808182a53105f4b815ca9"
     end
   end
 
